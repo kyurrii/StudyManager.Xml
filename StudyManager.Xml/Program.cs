@@ -22,9 +22,9 @@ namespace StudyManager.Xml
             List<HomeTaskAssessment> HomeTaskAssessments = new List<HomeTaskAssessment>();
             List<LecturerCourse> LecturerCourses = new List<LecturerCourse>();
 
-            Students.Add(new Student() { Id = 1101, Name = "Bill Collins", BirthDate = DateTime.Parse("08.08.1999"), PhoneNumber = "06733450123", Email = "billcol@gmail.com.", GitHubLink = "link1",StudCourses=new List<Course>() });
-            Students.Add(new Student() { Id = 1102, Name = "Ivan Vitrenko", BirthDate = DateTime.Parse("08.08.1998"), PhoneNumber = "0673345044", Email = "ivanvl@gmail.com.", GitHubLink = "link2", StudCourses = new List<Course>() });
-            Students.Add(new Student() { Id = 1103, Name = "Andriy Tymchuk", BirthDate = DateTime.Parse("08.08.1998"), PhoneNumber = "0673345044", Email = "ivanvl@gmail.com.", GitHubLink = "link2", StudCourses = new List<Course>() });
+            Students.Add(new Student() { Id = 1101, Name = "Bill Collins", BirthDate = DateTime.Parse("08.08.1999"), PhoneNumber = "06733450123", Email = "billcol@gmail.com.", GitHubLink = "link1",StudCourses=new List<Course>() , HomeTaskAssessments = new List<HomeTaskAssessment>() });
+            Students.Add(new Student() { Id = 1102, Name = "Ivan Vitrenko", BirthDate = DateTime.Parse("08.08.1998"), PhoneNumber = "0673345044", Email = "ivanvl@gmail.com.", GitHubLink = "link2", StudCourses = new List<Course>(), HomeTaskAssessments = new List<HomeTaskAssessment>() });
+            Students.Add(new Student() { Id = 1103, Name = "Andriy Tymchuk", BirthDate = DateTime.Parse("08.08.1998"), PhoneNumber = "0673345044", Email = "ivanvl@gmail.com.", GitHubLink = "link2", StudCourses = new List<Course>(), HomeTaskAssessments = new List<HomeTaskAssessment>() });
 
 
             Courses.Add(new Course() { Id = 1, Name = "Math", StartDate = DateTime.Parse("04.05.2019"), EndDate = DateTime.Parse("24.08.2019"), PassCredits = 95, CourseLecturers = new List < Lecturer > () });
@@ -145,6 +145,20 @@ namespace StudyManager.Xml
 
             }
 
+            foreach (Student student in Students)
+            {
+
+                foreach (var item in stdcourseList)
+                {
+                    if (student.Id == item.StudentID)
+                    {
+                        student.HomeTaskAssessments.Add(new HomeTaskAssessment { Id = item.HomeTaskID, IsComplete = item.HomeTaskMark});
+                    }
+                }
+
+            }
+
+
 
             var courseList1 = Courses.Join(
                 LecturerCourses,
@@ -206,44 +220,17 @@ namespace StudyManager.Xml
             }
 
 
-            
-
-
-         /*
-            var gruppedResult = stdcourseList.GroupBy(s => new { s.StudentName, s.CourseName }).GroupBy(m => m.Key.StudentName);
-
-            
-             foreach (var stud in gruppedResult)
-             {
-                 Console.WriteLine("Students:{0}", stud.Key);
-
-                 foreach(var cr in stud)
-                 {
-                     Console.WriteLine("Courses:{0}", cr.Key);
-
-                    foreach (var hw in cr)
-                    {
-                        Console.WriteLine("HomeTasks: HtaskID: {0} HtaskMark: {1}", hw.HomeTaskID, hw.HomeTaskMark);
-
-
-                    }   
-                 }
-               //  Console.WriteLine("Students-Courses: StudID {0}, StudName {1},  CourseID {2}, Course Title {3} ", item.StudentID, item.StudentName, item.CourseID, item.CourseName);
-             }
-             Console.ReadLine();
            
-            */
             
                //Add new Student to List from XML file:
 
                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Student>));
 
-            /*
                List<Student> newStudents = new List<Student>();
 
 
 
-               string FileName = "newStudent1.xml";
+               string FileName = "newStudent.xml";
 
              //  newStudents = AddNewObject(Students, FileName);
 
@@ -273,7 +260,7 @@ namespace StudyManager.Xml
                }
                Console.ReadKey();
 
-            */
+            
             using (var fileStream = File.Create("serializedStudent.xml"))
                {
                    xmlSerializer.Serialize(fileStream, Students);
@@ -297,7 +284,7 @@ namespace StudyManager.Xml
             public string GitHubLink { get; set; }
             
             public List<Course> StudCourses { get; set; }
-            [XmlIgnore]
+          
             public List<HomeTaskAssessment> HomeTaskAssessments { get; set; }
         }
 
@@ -350,16 +337,18 @@ namespace StudyManager.Xml
 
         }
 
-
+        [Serializable]
         public class HomeTaskAssessment
         {
            // public int Id { get; set; }
             public int Id { get; set; }
             public Boolean IsComplete { get; set; }
+            [XmlIgnore]
             public DateTime Date { get; set; }
-           // public int HWorkID { get; set; }
-
+            // public int HWorkID { get; set; }
+            [XmlIgnore]
             public int StudentId { get; set; }
+            [XmlIgnore]
             public int HomeTaskId { get; set; }
 
          //   public Student Student { get; set; }
