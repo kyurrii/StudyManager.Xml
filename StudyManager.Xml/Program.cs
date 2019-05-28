@@ -187,7 +187,7 @@ namespace StudyManager.Xml
             }
 
 
-
+         /*
             var gruppedResult = stdcourseList.GroupBy(s => new { s.StudentName, s.CourseName }).GroupBy(m => m.Key.StudentName);
 
             
@@ -210,7 +210,7 @@ namespace StudyManager.Xml
              }
              Console.ReadLine();
            
-
+            */
             
                //Add new Student to List from XML file:
 
@@ -278,6 +278,8 @@ namespace StudyManager.Xml
             [XmlIgnore]
             public List<HomeTaskAssessment> HomeTaskAssessments { get; set; }
         }
+
+
         [Serializable]
         public class Course
         {
@@ -286,19 +288,22 @@ namespace StudyManager.Xml
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
             public int PassCredits { get; set; }
+
+            public List<Lecturer> CourseLecturers { get; set; }
+
             [XmlIgnore]
             public ICollection<Student> Students { get; set; }
             [XmlIgnore]
             public ICollection<HomeTask> HomeTasks { get; set; }
 
-            public List<Lecturer> CourseLecturers { get; set; }
+           
         }
 
 
 
-           
 
 
+        [Serializable]
         public class Lecturer
         {
             public int Id { get; set; }
@@ -352,30 +357,7 @@ namespace StudyManager.Xml
             public int StudentId { get; set; }
         }
 
-        public static void InitializeEntities(List<Student> studlist)
-        {
-
-            studlist.Add(new Student() { Id = 1101, Name = "Bill Collins", BirthDate = DateTime.Parse("08.08.1999"), PhoneNumber = "06733450123", Email = "billcol@gmail.com.", GitHubLink = "link1" });
-            studlist.Add(new Student() { Id = 1102, Name = "Ivan Vitrenko", BirthDate = DateTime.Parse("08.08.1998"), PhoneNumber = "0673345044", Email = "ivanvl@gmail.com.", GitHubLink = "link2" });
-
-        }
-        /*
-          public static List<Object> AddNewObject (List<Object> obj, String filename)
-          {
-              XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Object>));
-
-              List<Object> newObjects = new List<Object>();
-
-              using (var fileStream = File.OpenRead(filename)) 
-              {
-                   newObjects = (List<Object>)xmlSerializer.Deserialize(fileStream);
-
-              }
-
-              return newObjects;
-
-
-          }   */
+       
 
        
 
