@@ -139,7 +139,7 @@ namespace StudyManager.Xml
                 {
                     if (student.Id == item.StudentID)
                     {
-                        student.StudCourses.Add(new Course {Id=item.CourseID,Name=item.CourseName,StartDate=item.StartDate,EndDate=item.EndDate,PassCredits=item.PassCred });
+                        student.StudCourses.Add(new Course {Id=item.CourseID,Name=item.CourseName,StartDate=item.StartDate,EndDate=item.EndDate,PassCredits=item.PassCred, CourseLecturers = new List<Lecturer>() });
                     }
                 }
 
@@ -172,19 +172,41 @@ namespace StudyManager.Xml
                 }
                 );
 
-
-
-
-            foreach(Course course in Courses)
+            foreach (Course course in Courses)
             {
                 foreach (var item in courseList2)
                 {
                     if (course.Id == item.CourseID)
                     {
-                        course.CourseLecturers.Add(new Lecturer { Id = item.LecturerID, Name = item.LecturerName, BirthDate=item.LEcturerBirthDate });
+                        course.CourseLecturers.Add(new Lecturer { Id = item.LecturerID, Name = item.LecturerName, BirthDate = item.LEcturerBirthDate });
                     }
                 }
             }
+
+
+
+            foreach (Student stud in Students)
+            {
+                foreach(Course course in stud.StudCourses)
+                {
+                    foreach (Course cr in Courses)
+                    {
+                        if (course.Id == cr.Id)
+                        {
+                           
+                            
+                                foreach(Lecturer lecturer in cr.CourseLecturers)
+                                {
+                                course.CourseLecturers.Add(new Lecturer { Id=lecturer.Id,Name=lecturer.Name,BirthDate=lecturer.BirthDate});
+                                }
+                            
+                        }
+                    }
+                }
+            }
+
+
+            
 
 
          /*
